@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KOOK限时送福利啦！</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #2b2d31, #1e1f22);
+      color: #fff;
+      overflow: hidden;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .page.active {
+      display: flex;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 420px;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 24px;
+      padding: 28px 22px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #86E900;
+      color: #fff;
+      font-size: 12px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      margin-bottom: 16px;
+      letter-spacing: 0.5px;
+    }
+
+    .gift-icon {
+      font-size: 54px;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      font-size: 26px;
+      line-height: 1.3;
+      margin-bottom: 10px;
+    }
+
+    .desc {
+      font-size: 15px;
+      color: rgba(255, 255, 255, 0.78);
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+
+    .btn {
+      width: 100%;
+      border: none;
+      background: #86E900;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      padding: 14px 18px;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      opacity: 0.95;
+    }
+
+    .result-title {
+      font-size: 30px;
+      margin-bottom: 12px;
+      color: #ffd866;
+    }
+
+    .result-text {
+      font-size: 16px;
+      line-height: 1.8;
+      color: rgba(255, 255, 255, 0.92);
+    }
+
+    .small {
+      margin-top: 16px;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.55);
+    }
+
+    .back-btn {
+      margin-top: 22px;
+    }
+
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      opacity: 0.85;
+      border-radius: 2px;
+      animation: drop linear forwards;
+    }
+
+    @keyframes drop {
+      from {
+        transform: translateY(-20px) rotate(0deg);
+      }
+
+      to {
+        transform: translateY(520px) rotate(360deg);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 首页 -->
+  <section class="page" id="homePage">
+    <div class="card">
+      <div class="badge">组队邀请</div>
+      <div class="gift-icon">🎁</div>
+      <h1>KOOK限时福利</h1>
+      <h1>与好友组队即可领取免费会员</h1>
+      <p class="desc">
+        仅限今天，点击下方按钮查看你的专属惊喜。
+      </p>
+      <button class="btn" onclick="goResult()">立即查看</button>
+    </div>
+  </section>
+
+  <!-- 结果页 -->
+  <section class="page" id="resultPage">
+    <div class="card" id="resultCard">
+      <div class="result-title">愚人节快乐！</div>
+<p class="result-text">
+  被我逮住了吧吴小登<br />
+    我可是记仇的 🤡
+</p>
+      <div class="small">小声蛐蛐：就猜你会点进来，鄙视你</div>
+      <button class="btn back-btn" onclick="goHome()">返回上一页</button>
+    </div>
+  </section>
+
+  <script>
+    function renderPage() {
+      const hash = window.location.hash;
+      const homePage = document.getElementById("homePage");
+      const resultPage = document.getElementById("resultPage");
+
+      homePage.classList.remove("active");
+      resultPage.classList.remove("active");
+
+      if (hash === "#result") {
+        resultPage.classList.add("active");
+        createConfetti();
+      } else {
+        homePage.classList.add("active");
+      }
+    }
+
+    function goResult() {
+      window.location.hash = "result";
+    }
+
+    function goHome() {
+      window.location.hash = "";
+    }
+
+    function createConfetti() {
+      const card = document.getElementById("resultCard");
+      const colors = ["#5865f2", "#ffd866", "#ff6b81", "#7bed9f", "#70a1ff", "#ffa502"];
+
+      document.querySelectorAll(".confetti").forEach(el => el.remove());
+
+      for (let i = 0; i < 28; i++) {
+        const piece = document.createElement("div");
+        piece.className = "confetti";
+        piece.style.left = Math.random() * 100 + "%";
+        piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.animationDuration = (Math.random() * 2 + 2) + "s";
+        piece.style.width = (Math.random() * 8 + 6) + "px";
+        piece.style.height = (Math.random() * 8 + 6) + "px";
+        card.appendChild(piece);
+
+        setTimeout(() => {
+          piece.remove();
+        }, 4500);
+      }
+    }
+
+    window.addEventListener("load", renderPage);
+    window.addEventListener("hashchange", renderPage);
+  </script>
+</body>
+
+</html>
